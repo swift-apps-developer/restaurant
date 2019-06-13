@@ -21,6 +21,7 @@
 		9C17BDBC228CAE9600F020B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C17BDBB228CAE9600F020B1 /* Assets.xcassets */; };
 		9C17BDBF228CAE9600F020B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C17BDBD228CAE9600F020B1 /* LaunchScreen.storyboard */; };
 		9C6FF3AE22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6FF3AD22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift */; };
+		9CD0C27622B2B31400D6F81A /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD0C27522B2B31400D6F81A /* MenuItemTableViewCell.swift */; };
 		9CEFE32422908F95003BD344 /* MenuService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEFE32322908F95003BD344 /* MenuService.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		9C17BDBE228CAE9600F020B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C17BDC0228CAE9600F020B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C6FF3AD22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConfirmationViewController.swift; sourceTree = "<group>"; };
+		9CD0C27522B2B31400D6F81A /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
 		9CEFE32322908F95003BD344 /* MenuService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +94,7 @@
 				9C05527D228DC79800D13954 /* OrderTableViewController.swift */,
 				9C05527F228DCE7A00D13954 /* MenuDetailViewController.swift */,
 				9C6FF3AD22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift */,
+				9CD0C27522B2B31400D6F81A /* MenuItemTableViewCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 				9CEFE32422908F95003BD344 /* MenuService.swift in Sources */,
 				9C05527C228DC78800D13954 /* MenuTableViewController.swift in Sources */,
 				9C05527E228DC79800D13954 /* OrderTableViewController.swift in Sources */,
+				9CD0C27622B2B31400D6F81A /* MenuItemTableViewCell.swift in Sources */,
 				9C17BDB5228CAE9400F020B1 /* AppDelegate.swift in Sources */,
 				9C6FF3AE22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift in Sources */,
 				9C05528C228DD40800D13954 /* PreparationTime.swift in Sources */,

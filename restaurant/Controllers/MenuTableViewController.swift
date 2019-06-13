@@ -54,12 +54,13 @@ class MenuTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCellIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCellIdentifier", for: indexPath) as! MenuItemTableViewCell
 
         let item = self.menuItems[indexPath.row]
         print(item)
-        cell.textLabel?.text = item.name
-        cell.detailTextLabel?.text = String(format: "$%.2f", item.price)
+        cell.itemTitleLabel?.text = item.name
+        cell.itemPriceLabel?.text = String(format: "$%.2f", item.price)
+        cell.itemImageView.layer.cornerRadius = 7
         
         MenuService.shared.fetchImage(for: item.imageURL) {
             (image) in
@@ -70,7 +71,7 @@ class MenuTableViewController: UITableViewController {
                     return
                 }
                 
-                cell.imageView?.image = image
+                cell.itemImageView?.image = image
                 cell.setNeedsLayout()
             }
         }

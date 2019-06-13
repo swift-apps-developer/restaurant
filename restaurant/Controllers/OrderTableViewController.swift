@@ -41,13 +41,14 @@ class OrderTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderItemIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderItemIdentifier", for: indexPath) as! MenuItemTableViewCell
 
         let index = indexPath.row
         let menuItem = MenuService.shared.order.items[index]
         
-        cell.textLabel?.text = menuItem.name
-        cell.detailTextLabel?.text = String(format: "$%.2f", menuItem.price)
+        cell.itemTitleLabel?.text = menuItem.name
+        cell.itemPriceLabel?.text = String(format: "$%.2f", menuItem.price)
+        cell.itemImageView.layer.cornerRadius = 7
         
         MenuService.shared.fetchImage(for: menuItem.imageURL, completionHandler: { (image) in
             guard let image = image else {return}
@@ -55,7 +56,7 @@ class OrderTableViewController: UITableViewController {
                     if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath != indexPath {
                         return
                     }
-                    cell.imageView?.image = image
+                    cell.itemImageView?.image = image
                     cell.setNeedsLayout()
                 }
             })
