@@ -15,5 +15,10 @@ Now the server is ready for client connections!
 
 Open the restaurant.xcodeproj file in Xcode, and run the project
 
+## Screenshots
 
-
+![alt text](https://raw.githubusercontent.com/swift-apps-developer/restaurant/master/app-images/categories.png)
+![alt text](https://raw.githubusercontent.com/swift-apps-developer/restaurant/master/app-images/menu-items.png)
+![alt text](https://raw.githubusercontent.com/swift-apps-developer/restaurant/master/app-images/menu-item.png)
+![alt text](https://raw.githubusercontent.com/swift-apps-developer/restaurant/master/app-images/order.png)
+![alt text](https://raw.githubusercontent.com/swift-apps-developer/restaurant/master/app-images/order-confirmation.png)
