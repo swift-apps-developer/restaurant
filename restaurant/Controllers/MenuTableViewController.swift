@@ -57,12 +57,12 @@ class MenuTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCellIdentifier", for: indexPath) as! MenuItemTableViewCell
 
         let item = self.menuItems[indexPath.row]
-        print(item)
         cell.itemTitleLabel?.text = item.name
         cell.itemPriceLabel?.text = String(format: "$%.2f", item.price)
         cell.itemImageView.layer.cornerRadius = 7
         
-        MenuService.shared.fetchImage(for: item.imageURL) {
+        let imageURL = URL(string: item.imageURL)!
+        MenuService.shared.fetchImage(for: imageURL) {
             (image) in
             guard let image = image else {return}
             

@@ -7,11 +7,27 @@
 //
 
 import Foundation
+import Realm
+import RealmSwift
 
-struct Order: Codable{
-    var items: [MenuItem]
+class Order: Object {
+    @objc dynamic var id = Int()
+    @objc dynamic var name = String()
+    @objc dynamic var createdDate = Date()
+    var items = List<OrderItem>()
     
-    init(items: [MenuItem] = []) {
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    convenience init(items: List<OrderItem> = List<OrderItem>()) {
+        self.init()
         self.items = items
+    }
+    
+    func generateName() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        return formatter.string(from: self.createdDate)
     }
 }

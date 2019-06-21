@@ -9,7 +9,7 @@
 import UIKit
 
 class CategoryTableViewController: UITableViewController {
-    var categories = [String]()
+    var categories = [Category]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,7 @@ class CategoryTableViewController: UITableViewController {
 //            self.tableView.reloadData()
 //        }
         
-        self.categories = MenuService.shared.categories
+        self.categories = MenuService.shared.getCategories() ?? []
         
         self.tableView.reloadData()
     }
@@ -57,7 +57,7 @@ class CategoryTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCellIdentifier", for: indexPath)
 
         let category = self.categories[indexPath.row]
-        cell.textLabel?.text = category
+        cell.textLabel?.text = category.name
 
         return cell
     }
@@ -109,7 +109,7 @@ class CategoryTableViewController: UITableViewController {
             let index = self.tableView.indexPathForSelectedRow!.row
             let category = self.categories[index]
             
-            menuTableViewController.category = category
+            menuTableViewController.category = category.name
         }
     }
  

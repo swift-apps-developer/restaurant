@@ -10,12 +10,15 @@ import UIKit
 
 class OrderTableViewController: UITableViewController {
     var preparationTime: Int?
+    var orderItems = [OrderItem]()
     @IBOutlet weak var submitOrderButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: MenuService.orderUpdatedNotification, object: nil)
+        
+        updateUI()
     }
 
     // MARK: - Table view data source
@@ -26,17 +29,19 @@ class OrderTableViewController: UITableViewController {
     }
     
     @objc func updateUI() {
-        self.tableView.reloadData()
-        if MenuService.shared.order.items.count > 0 {
+        let order = MenuService.shared.getLatestOrder()
+        if let order = order, order.items.count > 0 {
+            self.orderItems = Array(order.items)
             self.submitOrderButton.isEnabled = true
         } else {
+            self.orderItems = []
             self.submitOrderButton.isEnabled = false
         }
+        self.tableView.reloadData()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return MenuService.shared.order.items.count
+        return self.orderItems.count
     }
 
     
@@ -44,22 +49,25 @@ class OrderTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OrderItemIdentifier", for: indexPath) as! MenuItemTableViewCell
 
         let index = indexPath.row
-        let menuItem = MenuService.shared.order.items[index]
         
-        cell.itemTitleLabel?.text = menuItem.name
-        cell.itemPriceLabel?.text = String(format: "$%.2f", menuItem.price)
+        let orderItem = self.orderItems[index]
+            
+        cell.itemTitleLabel?.text = orderItem.menuItem?.name
+        cell.itemPriceLabel?.text = String(format: "$%.2f", (orderItem.menuItem?.price)!)
         cell.itemImageView.layer.cornerRadius = 7
         
-        MenuService.shared.fetchImage(for: menuItem.imageURL, completionHandler: { (image) in
+        let imageURL = URL(string: (orderItem.menuItem?.imageURL)!)!
+        MenuService.shared.fetchImage(for: imageURL, completionHandler: { (image) in
             guard let image = image else {return}
-                DispatchQueue.main.async {
-                    if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath != indexPath {
-                        return
-                    }
-                    cell.itemImageView?.image = image
-                    cell.setNeedsLayout()
+            DispatchQueue.main.async {
+                if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath != indexPath {
+                    return
                 }
-            })
+                cell.itemImageView?.image = image
+                cell.setNeedsLayout()
+            }
+        })
+        
 
         return cell
     }
@@ -77,7 +85,9 @@ class OrderTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            MenuService.shared.order.items.remove(at: indexPath.row)
+            let index = indexPath.row
+            let orderItem = self.orderItems[index]
+            MenuService.shared.removeOrderItem(orderItemId: orderItem.id)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -110,23 +120,23 @@ class OrderTableViewController: UITableViewController {
             let orderConfirmationViewController = segue.destination as! OrderConfirmationViewController
             orderConfirmationViewController.preparationTime = self.preparationTime!
         } else if segue.identifier == "MenuSegueFromOrderIdentifier" {
+            let index = self.tableView.indexPathForSelectedRow?.row
             let menuDetailViewController = segue.destination as! MenuDetailViewController
-            let index = tableView.indexPathForSelectedRow!.row
-            menuDetailViewController.item = MenuService.shared.order.items[index]
+            menuDetailViewController.item = self.orderItems[index!].menuItem
         }
     }
     
     
     @IBAction func unwindToOrderList(segue: UIStoryboardSegue) {
         if segue.identifier == "BackToOrderListSegue" {
-            MenuService.shared.order.items.removeAll()
+            MenuService.shared.createNewOrder()
         }
     }
 
     @IBAction func submitOrderButtonTapped(_ sender: Any) {
-        let orderTotalPrice = MenuService.shared.order.items.reduce(0.0) {
+        let orderTotalPrice = self.orderItems.reduce(0.0) {
             (result, item) -> Double in
-            return result + item.price
+            return result + (item.menuItem?.price)!
         }
         
         let formattedOrderPrice = String(format: "$%.2f", orderTotalPrice)
@@ -143,9 +153,9 @@ class OrderTableViewController: UITableViewController {
     }
     
     func submitOrder() {
-        let menuIDs = MenuService.shared.order.items.map {$0.id}
+        let menuIDs = orderItems.map {$0.menuItem?.id}
         
-        MenuService.shared.sumitOrderWith(menuIDs: menuIDs) {
+        MenuService.shared.sumitOrderWith(menuIDs: menuIDs as! [Int]) {
             (min: Int?) in
             if let preparationTime = min {
                 DispatchQueue.main.async {

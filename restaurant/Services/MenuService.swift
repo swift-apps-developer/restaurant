@@ -8,72 +8,46 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 class MenuService {
     static let shared = MenuService()
-    private var menuItemById = [Int: MenuItem]()
-    private var menuItemByCategory = [String: [MenuItem]]()
-    
-    var categories: [String] {
-        get {
-            return Array<String>(self.menuItemByCategory.keys.sorted())
-        }
-    }
+    var token : NotificationToken?
 
     static let orderUpdatedNotification = Notification.Name("MenuService.orderUpdated")
     static let menuItemsUpdatedNotification = Notification.Name("MenuService.menuItemsUpdated")
     
     static let orderIsReadyNotification = Notification.Name("MenuService.orderIsReady")
-    var order = Order() {
-        didSet {
-            NotificationCenter.default.post(name: MenuService.orderUpdatedNotification, object: nil)
-        }
-    }
 
     let baseURL = URL(string: "http://localhost:8090/")
     
     func getMenuItemById(id: Int) -> MenuItem? {
-        return self.menuItemById[id]
+        let realm = try! Realm()
+        return realm.object(ofType: MenuItem.self, forPrimaryKey: id)
     }
     
     func getMenuItemsByCategory(category: String) -> [MenuItem]? {
-        return self.menuItemByCategory[category]
+        let realm = try! Realm()
+        return Array(realm.objects(MenuItem.self).filter("category = '\(category)'"))
     }
     
+    func getCategories() -> [Category]? {
+        let realm = try! Realm()
+        return Array(realm.objects(Category.self))
+    }
     
-    
-    func fetchCategories(completionHandler: @escaping ([String]?) -> Void) {
+    func fetchCategories() {
         let url = self.baseURL?.appendingPathComponent("categories")
         
         let dataTask = URLSession.shared.dataTask(with: url!) {
             (data, error, response) in
             
             if let data = data, let jsonCategoryResult = try? JSONSerialization.jsonObject(with: data) as? [String: Any], let categories = jsonCategoryResult?["categories"] as? [String] {
-                completionHandler(categories)
+                self.storeCategories(categories)
+                self.fetchMenuItems()
             }
             else {
-                completionHandler(nil)
-            }
-        }
-        
-        dataTask.resume()
-    }
-    
-    func fetchMenuItems(forCategory category: String, completionHandler: @escaping ([MenuItem]?) -> Void){
-        let url = self.baseURL?.appendingPathComponent("menu")
-        var urlComponent = URLComponents(url: url!, resolvingAgainstBaseURL: true)!
-        urlComponent.queryItems = [URLQueryItem(name: "category", value: category)]
-        let menuURL = urlComponent.url!
-        
-        let dataTask = URLSession.shared.dataTask(with: menuURL) {
-            (data, response, error) in
-            let jsonDecoder = JSONDecoder()
-            
-            if let data = data, let result = try? jsonDecoder.decode(MenuItems.self, from: data) {
-                completionHandler(result.items)
-            }
-            else {
-                completionHandler(nil)
+                self.storeCategories([])
             }
         }
         
@@ -122,31 +96,13 @@ class MenuService {
         dataTask.resume()
     }
     
-    func loadOrder() {
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let orderFileURL = documentDirectoryURL.appendingPathComponent("order").appendingPathExtension("json")
-        guard let data = try? Data(contentsOf: orderFileURL) else {return}
-        let jsonDecoder = JSONDecoder()
-        self.order = (try? jsonDecoder.decode(Order.self, from: data)) ?? Order()
-    }
-    
-    func saveOrder() {
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let orderFileURL = documentDirectoryURL.appendingPathComponent("order").appendingPathExtension("json")
-        
-        let jsonEncoder = JSONEncoder()
-        if let data = try? jsonEncoder.encode(self.order) {
-            try? data.write(to: orderFileURL)
-        }
-    }
-    
     private func process(_ menuItems: [MenuItem]) {
-        self.menuItemById.removeAll()
-        self.menuItemByCategory.removeAll()
+        let realm = try! Realm()
         
         for item in menuItems {
-            self.menuItemById[item.id] = item
-            self.menuItemByCategory[item.category, default: []].append(item)
+            try! realm.write {
+                realm.add(item, update: .modified)
+            }
         }
         
         DispatchQueue.main.async {
@@ -154,7 +110,7 @@ class MenuService {
         }
     }
     
-    func loadRemoteData() {
+    func fetchMenuItems() {
         let url = self.baseURL?.appendingPathComponent("menu")
         let urlComponent = URLComponents(url: url!, resolvingAgainstBaseURL: true)!
         let menuURL = urlComponent.url!
@@ -173,31 +129,96 @@ class MenuService {
         dataTask.resume()
     }
     
-    func saveItems() {
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    func storeCategories(_ categories: [String]) {
+        let realm = try! Realm()
         
-        let itemsFileURL = documentDirectoryURL.appendingPathComponent("menuItems").appendingPathExtension("json")
-        
-        let items = Array(self.menuItemById.values)
-        
-        let jsonEncoder = JSONEncoder()
-        if let data = try? jsonEncoder.encode(items) {
-            try? data.write(to: itemsFileURL)
+        for (index, item) in categories.enumerated() {
+            let result = realm.objects(Category.self).filter("name = '\(item)'")
+            if result.count == 0 {
+                try! realm.write {
+                    realm.create(Category.self, value: ["id": index, "name": item])
+                }
+            }
         }
     }
     
-    func loadItems() {
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        
-        let itemsFileURL = documentDirectoryURL.appendingPathComponent("menuItems").appendingPathExtension("json")
-        
-        if let data = try? Data(contentsOf: itemsFileURL) {
-            let jsonDecoder = JSONDecoder()
-            if let menuItems = try? jsonDecoder.decode([MenuItem].self, from: data) {
-                self.process(menuItems)
+    func addToOrder(menuItem: MenuItem, count: Int = 1) {
+        if let order = getLatestOrder() {
+            let realm = try! Realm()
+            
+            var item = order.items.filter("menuItem.id = \(menuItem.id)").first
+            
+            if let item = item {
+                try! realm.write {
+                    item.count += 1
+                }
+            } else {
+                item = OrderItem(menuItem: menuItem)
+                let id = realm.objects(OrderItem.self).sorted(byKeyPath: "id").last?.id ?? 0
+                
+                item?.id = id + 1
+                try! realm.write {
+                    order.items.append(item!)
+                }
             }
-            else {
-                self.process([])
+        } else {
+            createNewOrder()
+            self.addToOrder(menuItem: menuItem)
+        }
+
+    }
+    
+    func createNewOrder() {
+        let realm = try! Realm()
+        let order = Order()
+        self.token = nil
+        
+        let id = realm.objects(Order.self).sorted(byKeyPath: "id").last?.id ?? 0
+        order.id = id + 1
+        
+        order.name = order.generateName()
+
+        try! realm.write {
+            realm.add(order)
+        }
+        
+        self.setOrderNotification(order)
+    }
+    
+    func getLatestOrder() -> Order? {
+        let realm = try! Realm()
+        let order = realm.objects(Order.self).sorted(byKeyPath: "createdDate").last
+        self.setOrderNotification(order)
+        return order
+    }
+    
+    func setOrderNotification(_ order: Order?) {
+        if let order = order, token == nil {
+            token = order.items.observe { change in
+                switch change {
+                case .initial:
+                    NotificationCenter.default.post(name: MenuService.orderUpdatedNotification, object: nil)
+                case .update:
+                    NotificationCenter.default.post(name: MenuService.orderUpdatedNotification, object: nil)
+                case .error(let error):
+                    print("An error occurred: \(error)")
+                }
+            }
+        }
+    }
+    
+    func removeOrderItem(orderItemId: Int) {
+        guard let order = self.getLatestOrder() else {
+            return
+        }
+        
+        let realm = try! Realm()
+        
+        let item = order.items.filter("id = \(orderItemId)").first
+        
+        if let item = item {
+            try! realm.write {
+                realm.delete(item)
             }
         }
     }

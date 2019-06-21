@@ -28,10 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        MenuService.shared.loadOrder()
-        MenuService.shared.loadItems()
-        
-        MenuService.shared.loadRemoteData()
+        MenuService.shared.fetchCategories()
+        if MenuService.shared.getLatestOrder() == nil {
+            MenuService.shared.createNewOrder()
+        }
         return true
     }
 
@@ -43,9 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        
-        MenuService.shared.saveOrder()
-        MenuService.shared.saveItems()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -69,7 +66,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     @objc func updateOrderTabBarBadge() {
-        switch MenuService.shared.order.items.count {
+        guard let order = MenuService.shared.getLatestOrder() else {
+            return
+        }
+        switch order.items.count {
         case 0:
             self.orderTabBarItem.badgeValue = nil
         case let count:

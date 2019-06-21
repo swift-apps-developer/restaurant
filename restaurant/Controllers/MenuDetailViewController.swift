@@ -49,7 +49,8 @@ class MenuDetailViewController: UIViewController {
         self.menuPriceLabel.text = "$ \(item.price)"
         self.menuDescriptionLabel.text = item.detailText
         
-        MenuService.shared.fetchImage(for: item.imageURL) {
+        let imageURL = URL(string: item.imageURL)!
+        MenuService.shared.fetchImage(for: imageURL) {
             (image) in
             guard let image = image else {return}
             DispatchQueue.main.async {
@@ -66,7 +67,7 @@ class MenuDetailViewController: UIViewController {
             self.addOrderButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         }
         
-        MenuService.shared.order.items.append(item)
+        MenuService.shared.addToOrder(menuItem: item)
     }
     
     /*

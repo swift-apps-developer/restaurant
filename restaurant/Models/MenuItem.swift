@@ -7,23 +7,52 @@
 //
 
 import Foundation
+import Realm
+import RealmSwift
 
 
-struct MenuItem: Codable {
-    var id: Int
-    var name: String
-    var detailText: String
-    var price: Double
-    var category: String
-    var imageURL: URL
+class MenuItem: Object, Codable {
+    @objc dynamic var id = Int()
+    @objc dynamic var name = String()
+    @objc dynamic var detailText = String()
+    @objc dynamic var price = Double()
+    @objc dynamic var category = String()
+    @objc dynamic var imageURL = String()
     
-    enum CodingKeys: String, CodingKey {
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    private enum CodingKeys: String, CodingKey {
         case id
         case name
         case detailText = "description"
         case price
         case category
         case imageURL = "image_url"
+    }
+    
+    convenience init(id: Int, name: String, detailText: String, price: Double, category: String, imageURL: String) {
+        self.init()
+        self.id = id
+        self.name = name
+        self.detailText = detailText
+        self.price = price
+        self.category = category
+        self.imageURL = imageURL
+        
+    }
+    
+    required init() {
+        super.init()
+    }
+    
+    required init(realm: RLMRealm, schema: RLMObjectSchema) {
+        super.init(realm: realm, schema: schema)
+    }
+    
+    required init(value: Any, schema: RLMSchema) {
+        super.init(value: value, schema: schema)
     }
     
 //    init(from decoder: Decoder) throws {
