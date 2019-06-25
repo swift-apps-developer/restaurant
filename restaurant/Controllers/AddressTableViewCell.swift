@@ -1,5 +1,5 @@
 //
-//  MenuItemTableViewCell.swift
+//  AddressTableViewCell.swift
 //  restaurant
 //
 //  Created by love on 6/25/19.
@@ -8,11 +8,10 @@
 
 import UIKit
 
-class MenuItemTableViewCell: UITableViewCell {
+class AddressTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var itemImageView: UIImageView!
-    @IBOutlet weak var itemTitleLabel: UILabel!
-    @IBOutlet weak var itemPriceLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

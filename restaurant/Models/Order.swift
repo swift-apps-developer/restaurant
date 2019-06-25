@@ -14,6 +14,7 @@ class Order: Object {
     @objc dynamic var id = Int()
     @objc dynamic var name = String()
     @objc dynamic var createdDate = Date()
+    @objc dynamic var address: Address?
     var items = List<OrderItem>()
     
     override static func primaryKey() -> String? {
@@ -23,6 +24,18 @@ class Order: Object {
     convenience init(items: List<OrderItem> = List<OrderItem>()) {
         self.init()
         self.items = items
+    }
+    
+    required init() {
+        super.init()
+    }
+    
+    required init(realm: RLMRealm, schema: RLMObjectSchema) {
+        super.init(realm: realm, schema: schema)
+    }
+    
+    required init(value: Any, schema: RLMSchema) {
+        super.init(value: value, schema: schema)
     }
     
     func generateName() -> String {

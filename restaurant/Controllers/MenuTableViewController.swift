@@ -15,12 +15,7 @@ class MenuTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = self.category?.capitalized
-        
-//        MenuService.shared.fetchMenuItems(forCategory: self.category) { (data) in
-//            if let result = data {
-//                self.updateUI(with: result)
-//            }
-//        }
+        tableView.register(UINib(nibName: "MenuItemTableViewCell", bundle: nil), forCellReuseIdentifier: "MenuItemTableViewCell")
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: MenuService.menuItemsUpdatedNotification, object: nil)
         
@@ -29,11 +24,6 @@ class MenuTableViewController: UITableViewController {
     }
     
     @objc func updateUI() {
-//        DispatchQueue.main.async {
-//            self.menuItems = menuItems
-//            self.tableView.reloadData()
-//        }
-        
         guard let category = category else {return}
         self.menuItems = MenuService.shared.getMenuItemsByCategory(category: category) ?? []
         
@@ -43,7 +33,6 @@ class MenuTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -54,7 +43,8 @@ class MenuTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCellIdentifier", for: indexPath) as! MenuItemTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for:
+            indexPath) as! MenuItemTableViewCell
 
         let item = self.menuItems[indexPath.row]
         cell.itemTitleLabel?.text = item.name
@@ -145,5 +135,9 @@ class MenuTableViewController: UITableViewController {
         
         self.category = (coder.decodeObject(forKey: "category") as! String)
         self.updateUI()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "MenuSegueIdentifier", sender: nil)
     }
 }

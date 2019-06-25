@@ -20,9 +20,20 @@
 		9C17BDBA228CAE9400F020B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C17BDB8228CAE9400F020B1 /* Main.storyboard */; };
 		9C17BDBC228CAE9600F020B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C17BDBB228CAE9600F020B1 /* Assets.xcassets */; };
 		9C17BDBF228CAE9600F020B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C17BDBD228CAE9600F020B1 /* LaunchScreen.storyboard */; };
-		9C6FF3AE22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6FF3AD22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift */; };
+		9C3E1D9022BE0981009C0155 /* ShipmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E1D8F22BE0981009C0155 /* ShipmentTableViewController.swift */; };
+		9C3E1D9222BE120C009C0155 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3E1D9122BE120C009C0155 /* MapKit.framework */; };
+		9C73E7EB22C0A4A300100AC1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E7EA22C0A4A300100AC1 /* Utils.swift */; };
 		9CA6669E22BD1674000C8326 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA6669D22BD1674000C8326 /* OrderItem.swift */; };
-		9CD0C27622B2B31400D6F81A /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD0C27522B2B31400D6F81A /* MenuItemTableViewCell.swift */; };
+		9CE2D73D22BF358E00ACA646 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2D73C22BF358E00ACA646 /* Address.swift */; };
+		9CE2D73F22BF3FCB00ACA646 /* AddressTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2D73E22BF3FCB00ACA646 /* AddressTableViewController.swift */; };
+		9CE2D74222BF591100ACA646 /* AddressAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2D74122BF591100ACA646 /* AddressAnnotation.swift */; };
+		9CE33AFD22C21DE100C141B1 /* OrderConfirmationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE33AFC22C21DE100C141B1 /* OrderConfirmationTableViewController.swift */; };
+		9CE33B0422C2395100C141B1 /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE33B0222C2395100C141B1 /* MenuItemTableViewCell.swift */; };
+		9CE33B0522C2395100C141B1 /* MenuItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE33B0322C2395100C141B1 /* MenuItemTableViewCell.xib */; };
+		9CE33B0822C24E9400C141B1 /* AddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE33B0622C24E9400C141B1 /* AddressTableViewCell.swift */; };
+		9CE33B0922C24E9400C141B1 /* AddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE33B0722C24E9400C141B1 /* AddressTableViewCell.xib */; };
+		9CE33B0C22C2505500C141B1 /* PriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE33B0A22C2505500C141B1 /* PriceTableViewCell.swift */; };
+		9CE33B0D22C2505500C141B1 /* PriceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CE33B0B22C2505500C141B1 /* PriceTableViewCell.xib */; };
 		9CEFE32422908F95003BD344 /* MenuService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEFE32322908F95003BD344 /* MenuService.swift */; };
 		DE1AFD11C9609B8761B08CEE /* Pods_restaurant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08D8E674E2AD81A6664B851 /* Pods_restaurant.framework */; };
 /* End PBXBuildFile section */
@@ -44,9 +55,20 @@
 		9C17BDBB228CAE9600F020B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C17BDBE228CAE9600F020B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C17BDC0228CAE9600F020B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9C6FF3AD22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConfirmationViewController.swift; sourceTree = "<group>"; };
+		9C3E1D8F22BE0981009C0155 /* ShipmentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipmentTableViewController.swift; sourceTree = "<group>"; };
+		9C3E1D9122BE120C009C0155 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9C73E7EA22C0A4A300100AC1 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		9CA6669D22BD1674000C8326 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
-		9CD0C27522B2B31400D6F81A /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
+		9CE2D73C22BF358E00ACA646 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		9CE2D73E22BF3FCB00ACA646 /* AddressTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTableViewController.swift; sourceTree = "<group>"; };
+		9CE2D74122BF591100ACA646 /* AddressAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressAnnotation.swift; sourceTree = "<group>"; };
+		9CE33AFC22C21DE100C141B1 /* OrderConfirmationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConfirmationTableViewController.swift; sourceTree = "<group>"; };
+		9CE33B0222C2395100C141B1 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
+		9CE33B0322C2395100C141B1 /* MenuItemTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemTableViewCell.xib; sourceTree = "<group>"; };
+		9CE33B0622C24E9400C141B1 /* AddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTableViewCell.swift; sourceTree = "<group>"; };
+		9CE33B0722C24E9400C141B1 /* AddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTableViewCell.xib; sourceTree = "<group>"; };
+		9CE33B0A22C2505500C141B1 /* PriceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTableViewCell.swift; sourceTree = "<group>"; };
+		9CE33B0B22C2505500C141B1 /* PriceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PriceTableViewCell.xib; sourceTree = "<group>"; };
 		9CEFE32322908F95003BD344 /* MenuService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuService.swift; sourceTree = "<group>"; };
 		C08D8E674E2AD81A6664B851 /* Pods_restaurant.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_restaurant.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE88E910094FBB52752E5DF /* Pods-restaurant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restaurant.release.xcconfig"; path = "Target Support Files/Pods-restaurant/Pods-restaurant.release.xcconfig"; sourceTree = "<group>"; };
@@ -57,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C3E1D9222BE120C009C0155 /* MapKit.framework in Frameworks */,
 				DE1AFD11C9609B8761B08CEE /* Pods_restaurant.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,6 +90,7 @@
 		42097149D62C11DF4839BF1C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C3E1D9122BE120C009C0155 /* MapKit.framework */,
 				C08D8E674E2AD81A6664B851 /* Pods_restaurant.framework */,
 			);
 			name = Frameworks;
@@ -81,6 +105,7 @@
 				9C05528B228DD40800D13954 /* PreparationTime.swift */,
 				9C05528D228DD4A000D13954 /* Order.swift */,
 				9CA6669D22BD1674000C8326 /* OrderItem.swift */,
+				9CE2D73C22BF358E00ACA646 /* Address.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -88,6 +113,7 @@
 		9C055286228DD23E00D13954 /* Infrastucture */ = {
 			isa = PBXGroup;
 			children = (
+				9C73E7EA22C0A4A300100AC1 /* Utils.swift */,
 			);
 			path = Infrastucture;
 			sourceTree = "<group>";
@@ -95,6 +121,9 @@
 		9C055287228DD25F00D13954 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9CE33B0322C2395100C141B1 /* MenuItemTableViewCell.xib */,
+				9CE33B0B22C2505500C141B1 /* PriceTableViewCell.xib */,
+				9CE33B0722C24E9400C141B1 /* AddressTableViewCell.xib */,
 				9C17BDB8228CAE9400F020B1 /* Main.storyboard */,
 				9C17BDBB228CAE9600F020B1 /* Assets.xcassets */,
 				9C17BDBD228CAE9600F020B1 /* LaunchScreen.storyboard */,
@@ -109,8 +138,12 @@
 				9C05527B228DC78800D13954 /* MenuTableViewController.swift */,
 				9C05527D228DC79800D13954 /* OrderTableViewController.swift */,
 				9C05527F228DCE7A00D13954 /* MenuDetailViewController.swift */,
-				9C6FF3AD22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift */,
-				9CD0C27522B2B31400D6F81A /* MenuItemTableViewCell.swift */,
+				9C3E1D8F22BE0981009C0155 /* ShipmentTableViewController.swift */,
+				9CE2D73E22BF3FCB00ACA646 /* AddressTableViewController.swift */,
+				9CE33AFC22C21DE100C141B1 /* OrderConfirmationTableViewController.swift */,
+				9CE33B0222C2395100C141B1 /* MenuItemTableViewCell.swift */,
+				9CE33B0622C24E9400C141B1 /* AddressTableViewCell.swift */,
+				9CE33B0A22C2505500C141B1 /* PriceTableViewCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -136,6 +169,7 @@
 		9C17BDB3228CAE9400F020B1 /* restaurant */ = {
 			isa = PBXGroup;
 			children = (
+				9CE2D74022BF58EA00ACA646 /* ViewModels */,
 				9CEFE32222908F7C003BD344 /* Services */,
 				9C055288228DD27500D13954 /* Controllers */,
 				9C055287228DD25F00D13954 /* Views */,
@@ -145,6 +179,14 @@
 				9C17BDC0228CAE9600F020B1 /* Info.plist */,
 			);
 			path = restaurant;
+			sourceTree = "<group>";
+		};
+		9CE2D74022BF58EA00ACA646 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				9CE2D74122BF591100ACA646 /* AddressAnnotation.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		9CEFE32222908F7C003BD344 /* Services */ = {
@@ -198,6 +240,11 @@
 				TargetAttributes = {
 					9C17BDB0228CAE9400F020B1 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -225,6 +272,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C17BDBF228CAE9600F020B1 /* LaunchScreen.storyboard in Resources */,
+				9CE33B0922C24E9400C141B1 /* AddressTableViewCell.xib in Resources */,
+				9CE33B0522C2395100C141B1 /* MenuItemTableViewCell.xib in Resources */,
+				9CE33B0D22C2505500C141B1 /* PriceTableViewCell.xib in Resources */,
 				9C17BDBC228CAE9600F020B1 /* Assets.xcassets in Resources */,
 				9C17BDBA228CAE9400F020B1 /* Main.storyboard in Resources */,
 			);
@@ -289,17 +339,24 @@
 				9C055282228DD03300D13954 /* MenuItem.swift in Sources */,
 				9C055284228DD18C00D13954 /* MenuItems.swift in Sources */,
 				9C05528E228DD4A000D13954 /* Order.swift in Sources */,
+				9CE33B0822C24E9400C141B1 /* AddressTableViewCell.swift in Sources */,
 				9C055280228DCE7A00D13954 /* MenuDetailViewController.swift in Sources */,
 				9CEFE32422908F95003BD344 /* MenuService.swift in Sources */,
 				9C05527C228DC78800D13954 /* MenuTableViewController.swift in Sources */,
 				9C05527E228DC79800D13954 /* OrderTableViewController.swift in Sources */,
-				9CD0C27622B2B31400D6F81A /* MenuItemTableViewCell.swift in Sources */,
 				9C17BDB5228CAE9400F020B1 /* AppDelegate.swift in Sources */,
 				9CA6669E22BD1674000C8326 /* OrderItem.swift in Sources */,
-				9C6FF3AE22ABFCDF00D9A0BD /* OrderConfirmationViewController.swift in Sources */,
+				9CE33B0422C2395100C141B1 /* MenuItemTableViewCell.swift in Sources */,
+				9CE2D73F22BF3FCB00ACA646 /* AddressTableViewController.swift in Sources */,
+				9CE33B0C22C2505500C141B1 /* PriceTableViewCell.swift in Sources */,
 				9C05528C228DD40800D13954 /* PreparationTime.swift in Sources */,
+				9CE2D74222BF591100ACA646 /* AddressAnnotation.swift in Sources */,
 				9C05527A228DC76F00D13954 /* CategoryTableViewController.swift in Sources */,
 				9C05528A228DD36E00D13954 /* Category.swift in Sources */,
+				9CE2D73D22BF358E00ACA646 /* Address.swift in Sources */,
+				9CE33AFD22C21DE100C141B1 /* OrderConfirmationTableViewController.swift in Sources */,
+				9C73E7EB22C0A4A300100AC1 /* Utils.swift in Sources */,
+				9C3E1D9022BE0981009C0155 /* ShipmentTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

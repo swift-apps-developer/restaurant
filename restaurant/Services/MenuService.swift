@@ -15,6 +15,7 @@ class MenuService {
     var token : NotificationToken?
 
     static let orderUpdatedNotification = Notification.Name("MenuService.orderUpdated")
+    static let addressesUpdatedNotification = Notification.Name("MenuService.addressesUpdated")
     static let menuItemsUpdatedNotification = Notification.Name("MenuService.menuItemsUpdated")
     
     static let orderIsReadyNotification = Notification.Name("MenuService.orderIsReady")
@@ -34,6 +35,11 @@ class MenuService {
     func getCategories() -> [Category]? {
         let realm = try! Realm()
         return Array(realm.objects(Category.self))
+    }
+    
+    func getAddresses() -> [Address]? {
+        let realm = try! Realm()
+        return Array(realm.objects(Address.self).sorted(byKeyPath: "createdDate", ascending: false))
     }
     
     func fetchCategories() {
@@ -183,6 +189,69 @@ class MenuService {
         }
         
         self.setOrderNotification(order)
+    }
+    
+    func resetDefaultAddress() {
+        let realm = try! Realm()
+        
+        let defaultAddressResult = realm.objects(Address.self).filter("isDefault=true")
+        
+        if defaultAddressResult.count < 1 {
+            return
+        }
+        
+        let defaultAddress = defaultAddressResult[0]
+        try! realm.write {
+            defaultAddress.isDefault = false
+        }
+    }
+    
+    func setDefaultAddress(for address: Address) {
+        self.resetDefaultAddress()
+        let realm = try! Realm()
+        
+        try! realm.write {
+            address.isDefault = true
+        }
+        
+        NotificationCenter.default.post(name: MenuService.addressesUpdatedNotification, object: nil)
+    }
+    
+    func removeAddress(_ address: Address) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(address)
+        }
+        
+        NotificationCenter.default.post(name: MenuService.addressesUpdatedNotification, object: nil)
+    }
+    
+    func saveAddress(with address: Address) {
+        self.resetDefaultAddress()
+        let realm = try! Realm()
+        
+        if address.id == 0 {
+            let id = realm.objects(Address.self).sorted(byKeyPath: "id").last?.id ?? 0
+            address.id = id + 1
+        }
+        
+        try! realm.write {
+            realm.add(address, update: .modified)
+        }
+        
+        NotificationCenter.default.post(name: MenuService.addressesUpdatedNotification, object: nil)
+    }
+    
+    func setAddressForOrder(_ defaultAddress: Address) {
+        let realm = try! Realm()
+        let order = self.getLatestOrder()!
+        
+        try! realm.write {
+            order.address = defaultAddress
+        }
+        
+        self.createNewOrder()
     }
     
     func getLatestOrder() -> Order? {

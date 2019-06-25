@@ -9,12 +9,12 @@
 import UIKit
 
 class OrderTableViewController: UITableViewController {
-    var preparationTime: Int?
     var orderItems = [OrderItem]()
-    @IBOutlet weak var submitOrderButton: UIBarButtonItem!
+    @IBOutlet weak var proceedBarButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
+        tableView.register(UINib(nibName: "MenuItemTableViewCell", bundle: nil), forCellReuseIdentifier: "MenuItemTableViewCell")
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: MenuService.orderUpdatedNotification, object: nil)
         
@@ -32,10 +32,10 @@ class OrderTableViewController: UITableViewController {
         let order = MenuService.shared.getLatestOrder()
         if let order = order, order.items.count > 0 {
             self.orderItems = Array(order.items)
-            self.submitOrderButton.isEnabled = true
+            self.proceedBarButton.isEnabled = true
         } else {
             self.orderItems = []
-            self.submitOrderButton.isEnabled = false
+            self.proceedBarButton.isEnabled = false
         }
         self.tableView.reloadData()
     }
@@ -46,7 +46,8 @@ class OrderTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderItemIdentifier", for: indexPath) as! MenuItemTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for:
+            indexPath) as! MenuItemTableViewCell
 
         let index = indexPath.row
         
@@ -116,10 +117,7 @@ class OrderTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "OrderConfirmationSegue" {
-            let orderConfirmationViewController = segue.destination as! OrderConfirmationViewController
-            orderConfirmationViewController.preparationTime = self.preparationTime!
-        } else if segue.identifier == "MenuSegueFromOrderIdentifier" {
+        if segue.identifier == "MenuSegueFromOrderIdentifier" {
             let index = self.tableView.indexPathForSelectedRow?.row
             let menuDetailViewController = segue.destination as! MenuDetailViewController
             menuDetailViewController.item = self.orderItems[index!].menuItem
@@ -128,43 +126,6 @@ class OrderTableViewController: UITableViewController {
     
     
     @IBAction func unwindToOrderList(segue: UIStoryboardSegue) {
-        if segue.identifier == "BackToOrderListSegue" {
-            MenuService.shared.createNewOrder()
-        }
-    }
-
-    @IBAction func submitOrderButtonTapped(_ sender: Any) {
-        let orderTotalPrice = self.orderItems.reduce(0.0) {
-            (result, item) -> Double in
-            return result + (item.menuItem?.price)!
-        }
-        
-        let formattedOrderPrice = String(format: "$%.2f", orderTotalPrice)
-        let alert = UIAlertController(title: "Confirm Order", message: "You are about to submit your order with a total of \(formattedOrderPrice)", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Submit", style: .default){
-            action in
-            self.submitOrder()
-        })
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func submitOrder() {
-        let menuIDs = orderItems.map {$0.menuItem?.id}
-        
-        MenuService.shared.sumitOrderWith(menuIDs: menuIDs as! [Int]) {
-            (min: Int?) in
-            if let preparationTime = min {
-                DispatchQueue.main.async {
-                    self.preparationTime = preparationTime
-                    self.performSegue(withIdentifier: "OrderConfirmationSegue", sender: self.tableView)
-                }
-            }
-        }
-        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
