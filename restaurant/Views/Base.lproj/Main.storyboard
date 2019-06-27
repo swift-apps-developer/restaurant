@@ -549,11 +549,11 @@
             </objects>
             <point key="canvasLocation" x="4020" y="546.47676161919048"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Order List-->
         <scene sceneID="aDp-Hr-yFQ">
             <objects>
                 <navigationController storyboardIdentifier="OrderNav" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MdJ-lW-kvT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="fwC-oU-qnM"/>
+                    <tabBarItem key="tabBarItem" title="Order List" image="order" id="fwC-oU-qnM"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="zRr-Sv-Bni">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -566,11 +566,13 @@
             </objects>
             <point key="canvasLocation" x="580" y="548.27586206896558"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Menu-->
         <scene sceneID="xvu-7b-r5h">
             <objects>
                 <navigationController storyboardIdentifier="MenuNav" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8Is-lR-l02" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="bookmarks" id="gS9-iF-EIS"/>
+                    <tabBarItem key="tabBarItem" title="Menu" image="menu" id="gS9-iF-EIS">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="GPp-1c-mzE">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -622,6 +624,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="menu" width="40" height="40"/>
+        <image name="order" width="37.5" height="37.5"/>
         <image name="placeholder" width="100" height="100"/>
         <image name="prepare" width="640" height="640"/>
     </resources>
