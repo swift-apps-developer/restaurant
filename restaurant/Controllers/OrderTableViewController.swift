@@ -13,6 +13,7 @@ class OrderTableViewController: UITableViewController {
     var editButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setNavBarStyle()
         tableView.register(UINib(nibName: "MenuItemTableViewCell", bundle: nil), forCellReuseIdentifier: "MenuItemTableViewCell")
 //        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "FontAwesome", size: 15)!], for: UIControl.State.normal)
 

@@ -19,10 +19,15 @@ class MenuDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.menuImageView.layer.cornerRadius = 7
+        self.menuImageView.clipsToBounds = true
+        
         self.addOrderButton.layer.cornerRadius = 7
         self.addOrderButton.clipsToBounds = true
         
         self.setBarButtons()
+        
+        self.title = item?.name
         updateUI()
         // Do any additional setup after loading the view.
     }

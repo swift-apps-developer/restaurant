@@ -13,7 +13,7 @@ class CategoryTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.setNavBarStyle()
 //        MenuService.shared.fetchCategories{
 //            (result) in
 //            if let categoryList = result {

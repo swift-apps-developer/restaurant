@@ -16,6 +16,8 @@ class AddressTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setNavBarStyle()
+        
         self.tableView.allowsSelectionDuringEditing = true;
         self.setBarButtons()
 
