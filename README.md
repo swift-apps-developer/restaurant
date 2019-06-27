@@ -2,6 +2,11 @@
 
 In this project we have created a iOS app for a restaurant, that allows the customer to view a list of offerings, add items to a order, and submit the order to the restaurant. Using a server that you'll run on your own computer, you'll have an opportunity to modify the options, descriptions, and images that are returned from the API.
 
+## Information
+1. [Swift](https://swift.org/) 4.2
+2. [Realm](https://realm.io/docs/swift/latest/) 3.16.2
+3. [MapKit](https://developer.apple.com/documentation/mapkit)
+
 ## Run the server
 The server folder included with this project contains the binary file for the server. Double-click the OpenRestaurant.app file.
 
