@@ -182,14 +182,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Order" id="Ojv-NP-K74">
-                        <barButtonItem key="rightBarButtonItem" title="Proceed" id="2fZ-ua-w1s">
-                            <connections>
-                                <segue destination="UYQ-2z-zfw" kind="presentation" identifier="SelectAddressSegue" id="OaK-hH-VfZ"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="" id="2fZ-ua-w1s"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="proceedBarButton" destination="2fZ-ua-w1s" id="v7o-Lx-Ar8"/>
+                        <segue destination="UYQ-2z-zfw" kind="presentation" identifier="SelectAddressIdentifier" id="Ecy-Zh-KWS"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gto-Az-dNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -262,7 +258,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qKH-if-jht">
-                                                    <rect key="frame" x="10" y="16" width="355" height="27.5"/>
+                                                    <rect key="frame" x="10" y="16.5" width="355" height="27.5"/>
                                                     <fontDescription key="fontDescription" name="CourierNewPS-BoldMT" family="Courier New" pointSize="24"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -399,40 +395,13 @@
                             <outlet property="delegate" destination="hwq-Jt-sZ2" id="2M3-LH-oAP"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Addresses" largeTitleDisplayMode="never" id="p4t-tU-bQ2">
-                        <leftBarButtonItems>
-                            <barButtonItem systemItem="rewind" id="OLe-x9-Igj">
-                                <connections>
-                                    <segue destination="XDf-mO-Gv1" kind="unwind" unwindAction="unwindToOrderListWithSegue:" id="jJv-8m-g8i"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="compose" id="Yqo-4s-aEq">
-                                <connections>
-                                    <action selector="editBarButtonTapped:" destination="hwq-Jt-sZ2" id="0qO-gb-13u"/>
-                                </connections>
-                            </barButtonItem>
-                        </leftBarButtonItems>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="fastForward" id="ccn-cT-Cz4">
-                                <connections>
-                                    <action selector="submitOrderButtonTapped:" destination="hwq-Jt-sZ2" id="Pql-bw-lD5"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="add" id="xMl-Z9-38h">
-                                <connections>
-                                    <segue destination="phO-g9-n6C" kind="show" identifier="AddAddressSegue" id="UXR-ff-BL4"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Address List" largeTitleDisplayMode="never" id="p4t-tU-bQ2"/>
                     <connections>
-                        <outlet property="editBarButton" destination="Yqo-4s-aEq" id="88e-BN-3Jh"/>
-                        <outlet property="proceedButton" destination="ccn-cT-Cz4" id="RCy-tT-mHB"/>
                         <segue destination="8dc-4n-ndF" kind="presentation" identifier="OrderConfirmationSegue" id="0zB-yr-Caf"/>
+                        <segue destination="phO-g9-n6C" kind="show" identifier="AddAddressSegue" id="Xdz-6Y-JnM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zai-Dx-4yE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="XDf-mO-Gv1" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3228" y="545.57721139430294"/>
         </scene>
@@ -567,13 +536,7 @@
                             <outlet property="delegate" destination="phO-g9-n6C" id="yk0-C4-ZKo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Save Address" id="grB-Wb-Ar6">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="nbN-oX-WIp">
-                            <connections>
-                                <action selector="saveAddressTapped:" destination="phO-g9-n6C" id="jcv-y8-0GV"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Save Address" id="grB-Wb-Ar6"/>
                     <connections>
                         <outlet property="addressTextField" destination="5nb-hD-nhW" id="P1B-pu-G4d"/>
                         <outlet property="fullNameTextField" destination="b7j-0G-gyB" id="3hJ-WV-Ftb"/>
@@ -663,6 +626,6 @@
         <image name="prepare" width="640" height="640"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="op5-NG-qae"/>
+        <segue reference="Xdz-6Y-JnM"/>
     </inferredMetricsTieBreakers>
 </document>

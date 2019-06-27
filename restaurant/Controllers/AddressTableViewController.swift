@@ -11,12 +11,13 @@ import UIKit
 class AddressTableViewController: UITableViewController {
     var preparationTime: Int?
     var addresses: [Address] = []
+    var editButton: UIButton!
+    var proceedButton: UIButton!
     
-    @IBOutlet weak var editBarButton: UIBarButtonItem!
-    @IBOutlet weak var proceedButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.allowsSelectionDuringEditing = true;
+        self.setBarButtons()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -41,11 +42,6 @@ class AddressTableViewController: UITableViewController {
         }
 
         self.tableView.reloadData()
-    }
-
-    @IBAction func editBarButtonTapped(_ sender: UIBarButtonItem) {
-        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
-        
     }
     // MARK: - Table view data source
 
@@ -186,5 +182,63 @@ class AddressTableViewController: UITableViewController {
             }
         }
         
+    }
+    
+    func setBarButtons() {
+        self.setRightBarButton()
+        self.setLeftBarButton()
+    }
+    
+    func setRightBarButton() {
+        self.proceedButton = UIButton(type: .system)
+        self.proceedButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
+        self.proceedButton.setTitle("\u{f30b}", for: .normal)
+        self.proceedButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        self.proceedButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20.0)
+        self.proceedButton.addTarget(self, action: #selector(self.submitOrderButtonTapped(_:)), for: .touchUpInside)
+
+        let addAddressButton = UIButton(type: .system)
+        addAddressButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
+        addAddressButton.setTitle("\u{f067}", for: .normal)
+        addAddressButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        addAddressButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20.0)
+        addAddressButton.addTarget(self, action: #selector(self.addAddressButtonTapped(_:)), for: .touchUpInside)
+
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: self.proceedButton), UIBarButtonItem(customView: addAddressButton)]
+    }
+    
+    func setLeftBarButton() {
+        let backButton = UIButton(type: .system)
+        backButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
+        backButton.setTitle("\u{f30a}", for: .normal)
+        backButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        backButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -20.0, bottom: 0, right: 0)
+        backButton.addTarget(self, action: #selector(self.backButtonTapped(_:)), for: .touchUpInside)
+        
+        self.editButton = UIButton(type: .system)
+        self.editButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
+        self.editButton.setTitle("\u{f044}", for: .normal)
+        self.editButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        self.editButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -20.0, bottom: 0, right: 0)
+        self.editButton.addTarget(self, action: #selector(self.editButtonTapped(_:)), for: .touchUpInside)
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), UIBarButtonItem(customView: self.editButton)]
+    }
+    
+    
+    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
+        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        if self.tableView.isEditing {
+            self.editButton.setTitle("\u{f058}", for: .normal)
+        } else {
+            self.editButton.setTitle("\u{f044}", for: .normal)
+        }
+    }
+    
+    @IBAction func addAddressButtonTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "AddAddressSegue", sender: nil)
+    }
+    
+    @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

@@ -10,11 +10,13 @@ import UIKit
 
 class OrderTableViewController: UITableViewController {
     var orderItems = [OrderItem]()
-    @IBOutlet weak var proceedBarButton: UIBarButtonItem!
+    var editButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = editButtonItem
         tableView.register(UINib(nibName: "MenuItemTableViewCell", bundle: nil), forCellReuseIdentifier: "MenuItemTableViewCell")
+//        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "FontAwesome", size: 15)!], for: UIControl.State.normal)
+
+        self.setBarButtons()
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: MenuService.orderUpdatedNotification, object: nil)
         
@@ -32,10 +34,10 @@ class OrderTableViewController: UITableViewController {
         let order = MenuService.shared.getLatestOrder()
         if let order = order, order.items.count > 0 {
             self.orderItems = Array(order.items)
-            self.proceedBarButton.isEnabled = true
+            navigationItem.rightBarButtonItem!.isEnabled = true
         } else {
             self.orderItems = []
-            self.proceedBarButton.isEnabled = false
+            navigationItem.rightBarButtonItem!.isEnabled = false
         }
         self.tableView.reloadData()
     }
@@ -131,4 +133,44 @@ class OrderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+    
+    @IBAction func forwardButtonTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "SelectAddressIdentifier", sender: nil)
+    }
+
+    func setBarButtons() {
+        self.setRightBarButton()
+        self.setLeftBarButton()
+    }
+    
+    func setRightBarButton() {
+        let forwardButton = UIButton(type: .system)
+        forwardButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
+        forwardButton.setTitle("\u{f30b}", for: .normal)
+        forwardButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        forwardButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20.0)
+        forwardButton.addTarget(self, action: #selector(self.forwardButtonTapped(_:)), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: forwardButton)
+    }
+    
+    func setLeftBarButton() {
+        self.editButton = UIButton(type: .system)
+        self.editButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
+        self.editButton.setTitle("\u{f044}", for: .normal)
+        self.editButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        self.editButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -20.0, bottom: 0, right: 0)
+        self.editButton.addTarget(self, action: #selector(self.editButtonTapped(_:)), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.editButton)
+    }
+    
+    
+    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
+        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        if self.tableView.isEditing {
+            self.editButton.setTitle("\u{f058}", for: .normal)
+        } else {
+            self.editButton.setTitle("\u{f044}", for: .normal)
+        }
+    }
+    
 }

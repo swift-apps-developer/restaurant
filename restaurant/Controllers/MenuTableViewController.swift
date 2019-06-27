@@ -17,6 +17,8 @@ class MenuTableViewController: UITableViewController {
         self.navigationItem.title = self.category?.capitalized
         tableView.register(UINib(nibName: "MenuItemTableViewCell", bundle: nil), forCellReuseIdentifier: "MenuItemTableViewCell")
         
+        self.setBarButtons()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateUI), name: MenuService.menuItemsUpdatedNotification, object: nil)
         
         self.updateUI()
@@ -139,5 +141,24 @@ class MenuTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "MenuSegueIdentifier", sender: nil)
+    }
+    
+    func setBarButtons() {
+        self.setLeftBarButton()
+    }
+    
+    func setLeftBarButton() {
+        let backButton = UIButton(type: .system)
+        backButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
+        backButton.setTitle("\u{f30a}", for: .normal)
+        backButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        backButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -20.0, bottom: 0, right: 0)
+        backButton.addTarget(self, action: #selector(self.backButtonTapped(_:)), for: .touchUpInside)
+       
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+    }
+    
+    @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
     }
 }
