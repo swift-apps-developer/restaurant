@@ -158,14 +158,13 @@ class AddressTableViewController: UITableViewController {
         }
         
         let formattedOrderPrice = String(format: "$%.2f", orderTotalPrice)
-        let alert = UIAlertController(title: "Confirm Order", message: "You are about to submit your order with a total of \(formattedOrderPrice)", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Submit", style: .default){
-            action in
-            self.submitOrder()
-        })
+        let title = "Confirm Order"
+        let message = "You are about to submit your order with a total of \(formattedOrderPrice)"
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        let alert = AlertService.getAlertControllerWithAction(title: title, message: message, actionTitle: "Submit") { [weak self] in
+            self?.submitOrder()
+        }
         
         present(alert, animated: true, completion: nil)
     }

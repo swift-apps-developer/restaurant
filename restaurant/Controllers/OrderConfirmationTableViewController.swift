@@ -36,6 +36,7 @@ class OrderConfirmationTableViewController: UITableViewController {
         super.viewDidLoad()
         self.imageView.layer.cornerRadius = 50
         self.imageView.clipsToBounds = true
+
         
         self.tableView.allowsSelection = false
         
@@ -171,10 +172,11 @@ class OrderConfirmationTableViewController: UITableViewController {
         
         if self.seconds == 0 {
             self.timer?.invalidate()
-            let alert = UIAlertController(title: "Your Order Is Ready", message: "your order is ready to ship", preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            
+            let title = "Your Order Is Ready"
+            let message = "your order is ready to ship"
+            let alert = AlertService.getInfoAlertController(title: title, message: message)
+
             present(alert, animated: true, completion: nil)
         }
     }
