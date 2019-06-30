@@ -51,7 +51,10 @@ class MenuDetailViewController: UIViewController {
     }
     
     func updateUI() {
-        guard let item = self.item else {return}
+        guard let item = self.item else {
+            NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.menuItemNotFoundErrorTitle, "message": Messages.menuItemNotFoundErrorMessage])
+            return
+        }
         self.menuNameLabel.text = item.name
         self.menuPriceLabel.text = "$ \(item.price)"
         self.menuDescriptionLabel.text = item.detailText
@@ -67,7 +70,10 @@ class MenuDetailViewController: UIViewController {
     }
     
     @IBAction func addOrderButtonTapped(_ sender: UIButton) {
-        guard let item = self.item else {return}
+        guard let item = self.item else {
+            NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.menuItemNotFoundErrorTitle, "message": Messages.menuItemNotFoundErrorMessage])
+            return
+        }
         
         UIView.animate(withDuration: 0.3) {
             self.addOrderButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)

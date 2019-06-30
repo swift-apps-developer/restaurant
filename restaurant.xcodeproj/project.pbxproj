@@ -22,6 +22,7 @@
 		9C17BDBF228CAE9600F020B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C17BDBD228CAE9600F020B1 /* LaunchScreen.storyboard */; };
 		9C3E1D9022BE0981009C0155 /* ShipmentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E1D8F22BE0981009C0155 /* ShipmentTableViewController.swift */; };
 		9C3E1D9222BE120C009C0155 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3E1D9122BE120C009C0155 /* MapKit.framework */; };
+		9C544CC322C87BB900B39C35 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C544CC222C87BB900B39C35 /* Messages.swift */; };
 		9C73E7EB22C0A4A300100AC1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C73E7EA22C0A4A300100AC1 /* Utils.swift */; };
 		9C76E94122C32225000C3AF8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C76E94022C32225000C3AF8 /* FontAwesome.ttf */; };
 		9CA6669E22BD1674000C8326 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA6669D22BD1674000C8326 /* OrderItem.swift */; };
@@ -61,6 +62,7 @@
 		9C17BDC0228CAE9600F020B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C3E1D8F22BE0981009C0155 /* ShipmentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipmentTableViewController.swift; sourceTree = "<group>"; };
 		9C3E1D9122BE120C009C0155 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9C544CC222C87BB900B39C35 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		9C73E7EA22C0A4A300100AC1 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		9C76E94022C32225000C3AF8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		9CA6669D22BD1674000C8326 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				9C73E7EA22C0A4A300100AC1 /* Utils.swift */,
+				9C544CC222C87BB900B39C35 /* Messages.swift */,
 			);
 			path = Infrastucture;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C055282228DD03300D13954 /* MenuItem.swift in Sources */,
+				9C544CC322C87BB900B39C35 /* Messages.swift in Sources */,
 				9C055284228DD18C00D13954 /* MenuItems.swift in Sources */,
 				9C05528E228DD4A000D13954 /* Order.swift in Sources */,
 				9CE33B0822C24E9400C141B1 /* AddressTableViewCell.swift in Sources */,

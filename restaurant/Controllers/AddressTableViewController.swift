@@ -31,7 +31,7 @@ class AddressTableViewController: UITableViewController {
     }
     
     @objc func updateUI() {
-        self.addresses = MenuService.shared.getAddresses() ?? []
+        self.addresses = MenuService.shared.getAddresses()
         let hasDefaultAddress = self.addresses.filter{
             (address) -> Bool in
             return address.isDefault
@@ -151,7 +151,10 @@ class AddressTableViewController: UITableViewController {
  
     
     @IBAction func submitOrderButtonTapped(_ sender: Any) {
-        guard let order = MenuService.shared.getLatestOrder() else {return}
+        guard let order = MenuService.shared.getLatestOrder() else {
+            NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.cartIsEmptyErrorTitle, "message": Messages.cartIsEmptyErrorMessage])
+            return
+        }
         let orderTotalPrice = order.items.reduce(0.0) {
             (result, item) -> Double in
             return result + (item.menuItem?.price)!

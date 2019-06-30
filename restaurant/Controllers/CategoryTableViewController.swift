@@ -36,7 +36,7 @@ class CategoryTableViewController: UITableViewController {
 //            self.tableView.reloadData()
 //        }
         
-        self.categories = MenuService.shared.getCategories() ?? []
+        self.categories = MenuService.shared.getCategories()
         
         self.tableView.reloadData()
     }

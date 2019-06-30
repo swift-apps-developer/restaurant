@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var orderTabBarItem: UITabBarItem!
     var window: UIWindow?
+    var topWindow: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -20,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         URLCache.shared = urlCache
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateOrderTabBarBadge), name: MenuService.orderUpdatedNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showAlertViewController(_:)), name: AlertService.infoAlertNotification, object: nil)
         
         self.orderTabBarItem = (self.window?.rootViewController as! UITabBarController).viewControllers![1].tabBarItem
 
@@ -74,6 +77,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.orderTabBarItem.badgeValue = nil
         case let count:
             self.orderTabBarItem.badgeValue = "\(count)"
+        }
+    }
+    
+    @objc func showAlertViewController(_ notification: Notification) {
+        guard let data = notification.userInfo, let title = data["title"], let message = data["message"] else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            if self.topWindow == nil {
+                self.topWindow = UIWindow(frame: UIScreen.main.bounds)
+                self.topWindow?.rootViewController = UIViewController()
+                self.topWindow?.windowLevel = UIWindow.Level.alert + 1
+                
+                let alert = AlertService.getInfoAlertControllerWithAction(title: title as! String, message: message as! String) {
+                    self.topWindow?.isHidden = true
+                    self.topWindow = nil
+                }
+                
+                self.topWindow?.makeKeyAndVisible()
+                self.topWindow?.rootViewController?.present(alert, animated: true, completion:nil)
+            }
         }
     }
 }

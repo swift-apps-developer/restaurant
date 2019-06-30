@@ -32,12 +32,12 @@ class MenuService {
         return Array(realm.objects(MenuItem.self).filter("category = '\(category)'"))
     }
     
-    func getCategories() -> [Category]? {
+    func getCategories() -> [Category] {
         let realm = try! Realm()
         return Array(realm.objects(Category.self))
     }
     
-    func getAddresses() -> [Address]? {
+    func getAddresses() -> [Address] {
         let realm = try! Realm()
         return Array(realm.objects(Address.self).sorted(byKeyPath: "createdDate", ascending: false))
     }
@@ -45,16 +45,25 @@ class MenuService {
     func fetchCategories() {
         let url = self.baseURL?.appendingPathComponent("categories")
         
-        let dataTask = URLSession.shared.dataTask(with: url!) {
-            (data, error, response) in
+        let dataTask = URLSession.shared.dataTask(with: url!) { [unowned self]
+            (data, response, error) in
             
-            if let data = data, let jsonCategoryResult = try? JSONSerialization.jsonObject(with: data) as? [String: Any], let categories = jsonCategoryResult?["categories"] as? [String] {
-                self.storeCategories(categories)
-                self.fetchMenuItems()
+            guard self.handleError(data: data, response: response, error: error) else {
+                return
             }
+            
+            guard let data = data,
+                  let jsonCategoryResult = try? JSONSerialization.jsonObject(with: data),
+                  let categories = jsonCategoryResult as? [String: Any],
+                  let categoryList = categories["categories"] as? [String]
             else {
-                self.storeCategories([])
+                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Categories")])
+                return
             }
+            
+            self.storeCategories(categoryList)
+            self.fetchMenuItems()
+           
         }
         
         dataTask.resume()
@@ -74,16 +83,22 @@ class MenuService {
         urlRequest.httpBody = jsonData
         
         
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) {
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { [unowned self]
             (data, response, error) in
             
+            guard self.handleError(data: data, response: response, error: error) else {
+                return
+            }
+            
             let jsonDecoder = JSONDecoder()
-            if let data = data, let result = try? jsonDecoder.decode(PreparationTime.self, from: data) {
-                completionHander(result.prepareTime)
+            
+            guard let data = data, let result = try? jsonDecoder.decode(PreparationTime.self, from: data) else {
+                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Submit Order")])
+                return
             }
-            else {
-                completionHander(nil)
-            }
+            
+            completionHander(result.prepareTime)
+
         }
         
         dataTask.resume()
@@ -121,23 +136,57 @@ class MenuService {
         let urlComponent = URLComponents(url: url!, resolvingAgainstBaseURL: true)!
         let menuURL = urlComponent.url!
         
-        let dataTask = URLSession.shared.dataTask(with: menuURL){
-            (data, _, _) in
-            let jsonDecoder = JSONDecoder()
+        let dataTask = URLSession.shared.dataTask(with: menuURL){ [unowned self]
+            (data, response, error) in
             
-            if let data = data, let menuItems = try? jsonDecoder.decode(MenuItems.self, from: data) {
-                self.process(menuItems.items)
+            guard self.handleError(data: data, response: response, error: error) else {
+                return
             }
-            else {
-                self.process([])
+            
+            let jsonDecoder = JSONDecoder()
+            guard let data = data, let menuItems = try? jsonDecoder.decode(MenuItems.self, from: data) else {
+                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Menu Item")])
+                return
             }
+            
+            self.process(menuItems.items)
+
         }
         dataTask.resume()
     }
     
-    func storeCategories(_ categories: [String]) {
-        let realm = try! Realm()
+    func handleError(data: Data?, response: URLResponse?, error: Error?) -> Bool {
+        guard error == nil else {
+            NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.serverErrorTitle, "message": error!.localizedDescription])
+            return false
+        }
         
+        if let response = response {
+            switch (response as! HTTPURLResponse).statusCode {
+            case 400..<500:
+                var message = Messages.badRequestErrorMessage
+                if let data = data, let jsonError = try? JSONSerialization.jsonObject(with: data), let errorResult = jsonError as? [String: Any] {
+                    message = (errorResult["detail"] as? String) ?? message
+                }
+                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.badRequestErrorTitle, "message": message])
+                return false
+            case 500..<600:
+                var message = Messages.serverErrorMessage
+                if let data = data, let jsonError = try? JSONSerialization.jsonObject(with: data), let errorResult = jsonError as? [String: Any] {
+                    message = (errorResult["detail"] as? String) ?? message
+                }
+                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.serverErrorTitle, "message": Messages.serverErrorMessage])
+                return false
+            default:
+                break
+            }
+        }
+        return true
+    }
+    
+    func storeCategories(_ categories: [String]) {
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        let realm = try! Realm()
         for (index, item) in categories.enumerated() {
             let result = realm.objects(Category.self).filter("name = '\(item)'")
             if result.count == 0 {

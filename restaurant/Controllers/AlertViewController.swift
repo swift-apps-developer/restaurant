@@ -23,6 +23,7 @@ class AlertViewController: UIViewController {
     var isInfoAlert: Bool = false
     
     var actionHandler: (() -> Void)?
+    var infoHandler: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,5 +60,8 @@ class AlertViewController: UIViewController {
     }
     @IBAction func okButtonTapped(_ sender: Any) {
         dismiss(animated: true)
+        if let infoHandler = self.infoHandler {
+            infoHandler()
+        }
     }
 }

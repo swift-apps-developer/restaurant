@@ -11,6 +11,8 @@ import UIKit
 
 
 class AlertService {
+    static let infoAlertNotification = Notification.Name("AlertService.infoAlert")
+
     static func getAlertControllerWithAction(title: String, message: String, actionTitle: String, actionCompletion: @escaping () -> Void) -> AlertViewController {
         
         let storyboard = UIStoryboard(name: "Alert", bundle: .main)
@@ -33,6 +35,20 @@ class AlertService {
         
         alertViewContoller.alertTitle = title
         alertViewContoller.alertMessage = message
+        alertViewContoller.isInfoAlert = true
+        
+        return alertViewContoller
+    }
+    
+    static func getInfoAlertControllerWithAction(title: String, message: String, actionCompletion: @escaping () -> Void) -> AlertViewController {
+        
+        let storyboard = UIStoryboard(name: "Alert", bundle: .main)
+        
+        let alertViewContoller = storyboard.instantiateViewController(withIdentifier: "AlertViewController") as! AlertViewController
+        
+        alertViewContoller.alertTitle = title
+        alertViewContoller.alertMessage = message
+        alertViewContoller.infoHandler = actionCompletion
         alertViewContoller.isInfoAlert = true
         
         return alertViewContoller

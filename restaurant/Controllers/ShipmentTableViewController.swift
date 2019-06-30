@@ -87,9 +87,7 @@ class ShipmentTableViewController: UITableViewController, MKMapViewDelegate {
         }
         
         if !errorMessages.isEmpty {
-            let alert = UIAlertController(title: "Validation Error", message: errorMessages, preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            let alert = AlertService.getInfoAlertController(title: Messages.validationErrorTitle, message: errorMessages)
             
             present(alert, animated: true, completion: nil)
             

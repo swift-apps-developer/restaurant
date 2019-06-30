@@ -26,7 +26,10 @@ class MenuTableViewController: UITableViewController {
     }
     
     @objc func updateUI() {
-        guard let category = category else {return}
+        guard let category = category else {
+            NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.categoryIsRequiredErrorTitle, "message": Messages.categoryIsRequiredErrorMessage])
+            return
+        }
         self.menuItems = MenuService.shared.getMenuItemsByCategory(category: category) ?? []
         
         self.tableView.reloadData()
