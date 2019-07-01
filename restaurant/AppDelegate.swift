@@ -85,20 +85,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        DispatchQueue.main.async {
-            if self.topWindow == nil {
-                self.topWindow = UIWindow(frame: UIScreen.main.bounds)
-                self.topWindow?.rootViewController = UIViewController()
-                self.topWindow?.windowLevel = UIWindow.Level.alert + 1
-                
-                let alert = AlertService.getInfoAlertControllerWithAction(title: title as! String, message: message as! String) {
-                    self.topWindow?.isHidden = true
-                    self.topWindow = nil
-                }
-                
-                self.topWindow?.makeKeyAndVisible()
-                self.topWindow?.rootViewController?.present(alert, animated: true, completion:nil)
+        if self.topWindow == nil {
+            self.topWindow = UIWindow(frame: UIScreen.main.bounds)
+            self.topWindow?.rootViewController = UIViewController()
+            self.topWindow?.windowLevel = UIWindow.Level.alert + 1
+            
+            let alert = AlertService.getInfoAlertControllerWithAction(title: title as! String, message: message as! String) {
+                self.topWindow?.isHidden = true
+                self.topWindow = nil
             }
+            
+            self.topWindow?.makeKeyAndVisible()
+            self.topWindow?.rootViewController?.present(alert, animated: true, completion:nil)
         }
     }
 }

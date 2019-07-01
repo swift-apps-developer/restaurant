@@ -13,10 +13,13 @@ import RealmSwift
 class MenuService {
     static let shared = MenuService()
     var token : NotificationToken?
+    
+    private var categories: [Category] = []
 
     static let orderUpdatedNotification = Notification.Name("MenuService.orderUpdated")
     static let addressesUpdatedNotification = Notification.Name("MenuService.addressesUpdated")
     static let menuItemsUpdatedNotification = Notification.Name("MenuService.menuItemsUpdated")
+    static let categoriesUpdatedNotification = Notification.Name("MenuService.categoriesUpdated")
     
     static let orderIsReadyNotification = Notification.Name("MenuService.orderIsReady")
 
@@ -27,7 +30,7 @@ class MenuService {
         return realm.object(ofType: MenuItem.self, forPrimaryKey: id)
     }
     
-    func getMenuItemsByCategory(category: String) -> [MenuItem]? {
+    func getMenuItemsByCategory(category: String) -> [MenuItem] {
         let realm = try! Realm()
         return Array(realm.objects(MenuItem.self).filter("category = '\(category)'"))
     }
@@ -35,6 +38,10 @@ class MenuService {
     func getCategories() -> [Category] {
         let realm = try! Realm()
         return Array(realm.objects(Category.self))
+    }
+    
+    func getFreshCategories() -> [Category] {
+        return self.categories
     }
     
     func getAddresses() -> [Address] {
@@ -57,13 +64,22 @@ class MenuService {
                   let categories = jsonCategoryResult as? [String: Any],
                   let categoryList = categories["categories"] as? [String]
             else {
-                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Categories")])
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Categories")])
+                }
                 return
             }
             
+            self.categories = categoryList.enumerated().map {
+                (index, category) -> Category in
+                return Category(id: index + 1, name: category)
+            }
             self.storeCategories(categoryList)
             self.fetchMenuItems()
-           
+            
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: MenuService.categoriesUpdatedNotification, object: nil)
+            }
         }
         
         dataTask.resume()
@@ -93,7 +109,9 @@ class MenuService {
             let jsonDecoder = JSONDecoder()
             
             guard let data = data, let result = try? jsonDecoder.decode(PreparationTime.self, from: data) else {
-                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Submit Order")])
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Submit Order")])
+                }
                 return
             }
             
@@ -125,10 +143,6 @@ class MenuService {
                 realm.add(item, update: .modified)
             }
         }
-        
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: MenuService.menuItemsUpdatedNotification, object: nil)
-        }
     }
     
     func fetchMenuItems() {
@@ -145,7 +159,9 @@ class MenuService {
             
             let jsonDecoder = JSONDecoder()
             guard let data = data, let menuItems = try? jsonDecoder.decode(MenuItems.self, from: data) else {
-                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Menu Item")])
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.invalidJsonErrorTitle, "message": String.init(format: Messages.invalidJsonErrorMessage, "Menu Item")])
+                }
                 return
             }
             
@@ -157,7 +173,9 @@ class MenuService {
     
     func handleError(data: Data?, response: URLResponse?, error: Error?) -> Bool {
         guard error == nil else {
-            NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.serverErrorTitle, "message": error!.localizedDescription])
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.serverErrorTitle, "message": error!.localizedDescription])
+            }
             return false
         }
         
@@ -168,14 +186,18 @@ class MenuService {
                 if let data = data, let jsonError = try? JSONSerialization.jsonObject(with: data), let errorResult = jsonError as? [String: Any] {
                     message = (errorResult["detail"] as? String) ?? message
                 }
-                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.badRequestErrorTitle, "message": message])
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.badRequestErrorTitle, "message": message])
+                }
                 return false
             case 500..<600:
                 var message = Messages.serverErrorMessage
                 if let data = data, let jsonError = try? JSONSerialization.jsonObject(with: data), let errorResult = jsonError as? [String: Any] {
                     message = (errorResult["detail"] as? String) ?? message
                 }
-                NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.serverErrorTitle, "message": Messages.serverErrorMessage])
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: AlertService.infoAlertNotification, object: nil, userInfo: ["title": Messages.serverErrorTitle, "message": Messages.serverErrorMessage])
+                }
                 return false
             default:
                 break
@@ -186,13 +208,15 @@ class MenuService {
     
     func storeCategories(_ categories: [String]) {
         print(Realm.Configuration.defaultConfiguration.fileURL!)
+        let categoryObjectList = categories.enumerated().map {
+            (index, category) -> Category in
+            return Category(id: index + 1, name: category)
+        }
+        
         let realm = try! Realm()
-        for (index, item) in categories.enumerated() {
-            let result = realm.objects(Category.self).filter("name = '\(item)'")
-            if result.count == 0 {
-                try! realm.write {
-                    realm.create(Category.self, value: ["id": index, "name": item])
-                }
+        for item in categoryObjectList {
+            try! realm.write {
+                realm.add(item, update: .modified)
             }
         }
     }

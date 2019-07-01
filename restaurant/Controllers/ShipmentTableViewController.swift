@@ -276,7 +276,7 @@ class ShipmentTableViewController: UITableViewController, MKMapViewDelegate {
         saveButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
         saveButton.setTitle("\u{f0c7}", for: .normal)
         saveButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-        saveButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20.0)
+        saveButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -10.0)
         saveButton.addTarget(self, action: #selector(self.saveAddressTapped(_:)), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
     }
@@ -286,7 +286,7 @@ class ShipmentTableViewController: UITableViewController, MKMapViewDelegate {
         backButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
         backButton.setTitle("\u{f30a}", for: .normal)
         backButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-        backButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -20.0, bottom: 0, right: 0)
+        backButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0)
         backButton.addTarget(self, action: #selector(self.backButtonTapped(_:)), for: .touchUpInside)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)

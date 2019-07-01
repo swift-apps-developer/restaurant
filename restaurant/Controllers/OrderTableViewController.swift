@@ -149,7 +149,7 @@ class OrderTableViewController: UITableViewController {
         forwardButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
         forwardButton.setTitle("\u{f30b}", for: .normal)
         forwardButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-        forwardButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -20.0)
+        forwardButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -10.0)
         forwardButton.addTarget(self, action: #selector(self.forwardButtonTapped(_:)), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: forwardButton)
     }
@@ -159,7 +159,7 @@ class OrderTableViewController: UITableViewController {
         self.editButton.titleLabel?.font = UIFont(name: "Font Awesome 5 Free", size: 18.0)!
         self.editButton.setTitle("\u{f044}", for: .normal)
         self.editButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-        self.editButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -20.0, bottom: 0, right: 0)
+        self.editButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0)
         self.editButton.addTarget(self, action: #selector(self.editButtonTapped(_:)), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.editButton)
     }
